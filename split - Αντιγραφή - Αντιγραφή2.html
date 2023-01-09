@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Block Reveal Effects | Split Layout | Codrops</title>
+		<meta name="description" content="Ideas for revealing content in a schematic box look." />
+		<meta name="keywords" content="javascript, plugin, reveal, effect, demo, web development, web design, template" />
+		<meta name="author" content="Codrops" />
+		<link rel="shortcut icon" href="favicon.ico">
+		<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700|Poppins:700" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+		<link rel="stylesheet" type="text/css" href="css/demo.css" />
+		<link rel="stylesheet" type="text/css" href="css/revealer.css" />
+		<link rel="stylesheet" type="text/css" href="css/pater.css" />
+		<script>document.documentElement.className = 'js';</script>
+		<style>
+/* Force scrollbars onto browser window */
+body {
+margin-bottom: 200%;
+}
+
+/* Box styles */
+.myBox {
+border: none;
+padding: 5px;
+
+width: auto;
+height: auto;
+overflow: scroll;
+}
+
+/* Scrollbar styles */
+::-webkit-scrollbar {
+width: 12px;
+height: 12px;
+}
+
+::-webkit-scrollbar-track {
+border: 1px solid yellowgreen;
+border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+background: yellowgreen;  
+border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background: #88ba1c;  
+  }
+</style>
+</head>
+
+
+<!-- HTML -->
+<div class="myBox">
+	
+	<body class="demo-split loading">
+
+		
+			<section class="content">
+				<div  class="dual">
+					<div  class="dual__inner" id="rev-1">
+						<div  class="dual__half"></div>
+					</div>
+					<div  class="dual__content">
+					<u><b><i><font color="white">ΒΙΟΓΡΑΦΙΚΟ</font></i></u></b>
+						<font color="white">Study hard what interests you the most in the most undisciplined, irreverent and original manner possible.<span class="author">― Richard Feynman</font></span>
+					</div>
+				</div>
+			</section>
+		
+		
+		</main>
+		<script src="js/anime.min.js"></script>
+		<script src="js/scrollMonitor.js"></script>
+		<script src="js/main.js"></script>
+		<script>
+		(function() {
+			// Fake loading.
+			setTimeout(init, 1000);
+
+			function init() {
+				document.body.classList.remove('loading');
+
+				var splitContent = document.querySelector('.dual__content'),
+					rev1 = new RevealFx(document.querySelector('#rev-1'), {
+						revealSettings : {
+							bgcolor: '#2d2c2c',
+							direction: 'rl',
+							duration: 800,
+							easing: 'easeInOutCirc',
+							coverArea: 50,
+							onCover: function(contentEl, revealerEl) {
+								contentEl.style.opacity = 1;
+								splitContent.classList.add('dual__content--show');
+							}
+						}
+					});
+
+				rev1.reveal();
+
+				var scrollElemToWatch = document.getElementById('rev-2'),
+					watcher = scrollMonitor.create(scrollElemToWatch, -300),
+					mediaToolbar = document.querySelector('.media__toolbar'),
+					rev2 = new RevealFx(scrollElemToWatch, {
+						revealSettings : {
+							bgcolor: '#2d2c2c',
+							duration: 800,
+							easing: 'easeInOutCirc',
+							coverArea: 12.5,
+							onCover: function(contentEl, revealerEl) {
+								contentEl.style.opacity = 1;
+								mediaToolbar.classList.add('media__toolbar--show');
+							}
+						}
+					});
+
+				watcher.enterViewport(function() {
+					rev2.reveal();
+					watcher.destroy();
+				});
+			}
+		})();
+		</script>
+	</body>
+</html>
